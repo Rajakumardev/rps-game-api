@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { readDataStore, writeDataStore } = require('../helpers/helpers');
 const app = express();
 
@@ -6,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('rps-game-api');
@@ -14,6 +16,7 @@ app.get('/', (req, res) => {
 app.post('/addNewHighScore', async (req, res) => {
 
     const { name, score } = req.body;
+    console.log(name, score, req.body);
     const data = JSON.parse(await readDataStore('data/datastore.json'));
     data.highScores.push({ name, score });
     writeDataStore('data/datastore.json', JSON.stringify(data));
